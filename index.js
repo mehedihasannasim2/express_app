@@ -13,7 +13,7 @@ const { Rental } = require('./models/rental');
 const app = express();
 
 if (!config.get('jwtPrivateKey')) {
-    console.error('FATAL ERROR: jwtPrivateKey is not define');
+    console.error('FATAL ERROR: jwtPrivateKey is not define...');
     process.exit(1);
 }
 
