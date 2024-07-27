@@ -1,3 +1,4 @@
+const config = require('config');
 const Joi = require('joi');
 const bcrypt = require('bcrypt');
 const _ = require('lodash');
