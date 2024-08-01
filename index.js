@@ -1,5 +1,6 @@
 require('express-async-errors');
 const winston = require('winston');
+require('winston-mongodb');
 const error = require('./middleware/error');
 const config = require('config');
 const Joi = require('joi');
@@ -17,6 +18,10 @@ const app = express();
 
 
 winston.add(winston.transports.File, {filename: 'logfile.log' });
+winston.add(winston.transports.MongoDB, {
+    db: 'mongodb://localhost/genre_DB',
+    
+ });
 
 if (!config.get('jwtPrivateKey')) {
     console.error('FATAL ERROR: jwtPrivateKey is not define...');
