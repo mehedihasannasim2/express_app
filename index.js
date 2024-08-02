@@ -16,12 +16,20 @@ const rentals = require('./routes/rentals');
 const { Rental } = require('./models/rental');
 const app = express();
 
+process.on('uncaughtException', (ex) => {
+    console.log("WE GOT AN UNCAUGHT EXCEPTION");
+    winston.error(ex.message, ex);
+});
+
+
 
 winston.add(winston.transports.File, {filename: 'logfile.log' });
 winston.add(winston.transports.MongoDB, {
     db: 'mongodb://localhost/genre_DB',
     
- });
+});
+
+throw new Error('Something failed during startup...');
 
 if (!config.get('jwtPrivateKey')) {
     console.error('FATAL ERROR: jwtPrivateKey is not define...');
