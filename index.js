@@ -16,11 +16,17 @@ const rentals = require('./routes/rentals');
 const { Rental } = require('./models/rental');
 const app = express();
 
-process.on('uncaughtException', (ex) => {
-    console.log("WE GOT AN UNCAUGHT EXCEPTION");
-    winston.error(ex.message, ex);
-});
+// process.on('uncaughtException', (ex) => {
+//     winston.error(ex.message, ex);
+//     process.exit(1);
+// });
 
+winston.handleExceptions(
+    new winston.transports.File({ filename: 'uncaughtExceptions.log'}));
+
+process.on('unhandledRejection', (ex) => {
+    throw ex;
+});
 
 
 winston.add(winston.transports.File, {filename: 'logfile.log' });
@@ -29,6 +35,8 @@ winston.add(winston.transports.MongoDB, {
     
 });
 
+const p = Promise.reject(new Error('Something failed miserably...'));
+p.then(() => console.log('Done'));
 throw new Error('Something failed during startup...');
 
 if (!config.get('jwtPrivateKey')) {
